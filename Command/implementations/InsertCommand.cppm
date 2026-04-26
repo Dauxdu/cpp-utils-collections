@@ -5,8 +5,8 @@ import ICommand;
 
 export namespace cmd
 {
-	template<typename ContextT, typename ValueT>
-	class Insert final : public ICommand
+	template <typename ContextT, typename ValueT>
+	class Insert final : public ICommand<ContextT>
 	{
 	private:
 		std::size_t _index = 0;
@@ -16,12 +16,12 @@ export namespace cmd
 		Insert(std::size_t index, ValueT value)
 			: _index(index), _value(value) {};
 
-		void Execute(Context<ContextT>& ctx) override
+		void Execute(Context<ContextT> &ctx) override
 		{
 			ctx.data.insert(ctx.data.begin() + _index, _value);
 		}
 
-		void Undo(Context<ContextT>& ctx) override
+		void Undo(Context<ContextT> &ctx) override
 		{
 			ctx.data.erase(ctx.data.begin() + _index);
 		}
