@@ -3,9 +3,9 @@
 import std;
 import ICommand;
 
-template <typename ContextT, typename ValueT>
 export namespace cmd
 {
+	template <typename ContextT, typename ValueT>
 	class Erase final : public ICommand
 	{
 	private:
