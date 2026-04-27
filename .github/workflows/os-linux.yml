@@ -13,7 +13,12 @@ jobs:
       - name: Install CMake 4.3
         uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "4.3.x"
+          cmake-version: "4.3"
+
+      - name: Install GCC
+        uses: egor-tensin/setup-gcc@v2
+        with:
+          version: "15"
 
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y build-essential gcc g++ ninja-build
