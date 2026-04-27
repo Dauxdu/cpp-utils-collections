@@ -20,12 +20,6 @@ jobs:
         with:
           version: "15"
 
-      - name: Install dependencies
-        run: sudo apt update && sudo apt install -y build-essential gcc g++ ninja-build
-
-      - name: Verify CMake version
-        run: cmake --version
-
       - name: Configure
         run: cmake --preset linux-debug
 
