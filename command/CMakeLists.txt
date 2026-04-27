@@ -10,6 +10,7 @@ target_sources(cmd
     src/CommandErase.cppm
     src/CommandHistory.cppm
     src/CommandInsert.cppm
+    src/CommandSwap.cppm
 )
 
 target_compile_features(cmd PUBLIC cxx_std_23)
