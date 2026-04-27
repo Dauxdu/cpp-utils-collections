@@ -5,14 +5,14 @@ import ICommand;
 
 export namespace cmd
 {
-    template <typename ContextT>
     class CommandHistory
     {
+    private:
         std::size_t _max_history{};
 
-        std::deque<std::unique_ptr<ICommand<ContextT>>> _undo_cmds{};
+        std::deque<std::unique_ptr<ICommand>> _undo_cmds{};
 
-        std::deque<std::unique_ptr<ICommand<ContextT>>> _redo_cmds{};
+        std::deque<std::unique_ptr<ICommand>> _redo_cmds{};
 
         void Trim() noexcept
         {
@@ -77,38 +77,38 @@ export namespace cmd
             return descs;
         }
 
-        void Execute(std::unique_ptr<ICommand<ContextT>> cmd, Context<ContextT> &ctx)
+        void Execute(std::unique_ptr<ICommand> cmd)
         {
             if (!cmd)
             {
                 throw std::invalid_argument("Error! Not a command.");
             }
 
-            cmd->Execute(ctx);
+            cmd->Execute();
             _redo_cmds.clear();
             _undo_cmds.push_back(std::move(cmd));
             Trim();
         }
 
-        void Undo(Context<ContextT> &ctx, std::size_t steps = 1)
+        void Undo(std::size_t steps = 1)
         {
             steps = std::min(steps, _undo_cmds.size());
             while (steps-- > 0)
             {
                 auto &cmd = _undo_cmds.back();
-                cmd->Undo(ctx);
+                cmd->Undo();
                 _redo_cmds.push_back(std::move(cmd));
                 _undo_cmds.pop_back();
             }
         }
 
-        void Redo(Context<ContextT> &ctx, std::size_t steps = 1)
+        void Redo(std::size_t steps = 1)
         {
             steps = std::min(steps, _redo_cmds.size());
             while (steps-- > 0)
             {
                 auto &cmd = _redo_cmds.back();
-                cmd->Execute(ctx);
+                cmd->Execute();
                 _undo_cmds.push_back(std::move(cmd));
                 _redo_cmds.pop_back();
             }

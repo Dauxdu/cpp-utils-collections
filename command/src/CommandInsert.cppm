@@ -5,25 +5,32 @@ import ICommand;
 
 export namespace cmd
 {
-	template <typename ContextT, typename ValueT>
-	class Insert final : public ICommand<ContextT>
+	template <typename ContextT>
+	class Insert final : public ICommand
 	{
 	private:
+		Context<ContextT>& _ctx;
 		std::size_t _index = 0;
-		ValueT _value;
+		ContextT _value;
 
 	public:
-		Insert(std::size_t index, ValueT value)
-			: _index(index), _value(value) {};
-
-		void Execute(Context<ContextT> &ctx) override
+		Insert(Context<ContextT>& ctx, std::size_t index, ContextT value)
+			: _ctx(ctx), _index(index), _value(value) 
 		{
-			ctx.data.insert(ctx.data.begin() + _index, _value);
+			if (index >= ctx.data.size())
+			{
+				throw std::out_of_range("cmd::Insert: index out of range");
+			}
+		};
+
+		void Execute() override
+		{
+			_ctx.data.insert(_ctx.data.begin() + _index, _value);
 		}
 
-		void Undo(Context<ContextT> &ctx) override
+		void Undo() override
 		{
-			ctx.data.erase(ctx.data.begin() + _index);
+			_ctx.data.erase(_ctx.data.begin() + _index);
 		}
 
 		[[nodiscard]]

@@ -5,26 +5,33 @@ import ICommand;
 
 export namespace cmd
 {
-	template <typename ContextT, typename ValueT>
-	class Erase final : public ICommand<ContextT>
+	template <typename ContextT>
+	class Erase final : public ICommand
 	{
 	private:
+		Context<ContextT>& _ctx;
 		std::size_t _index = 0;
-		ValueT _value;
+		ContextT _value;
 
 	public:
-		Erase(std::size_t index)
-			: _index(index) {}
-
-		void Execute(Context<ContextT> &ctx) override
+		Erase(Context<ContextT>& ctx, std::size_t index)
+			: _ctx(ctx), _index(index) 
 		{
-			_value = std::move(ctx.data[_index]);
-			ctx.data.erase(ctx.data.begin() + _index);
+			if (index >= ctx.data.size())
+			{
+				throw std::out_of_range("cmd::Erase: index out of range");
+			}
 		}
 
-		void Undo(Context<ContextT> &ctx) override
+		void Execute() override
 		{
-			ctx.data.insert(ctx.data.begin() + _index, _value);
+			_value = std::move(_ctx.data[_index]);
+			_ctx.data.erase(_ctx.data.begin() + _index);
+		}
+
+		void Undo() override
+		{
+			_ctx.data.insert(_ctx.data.begin() + _index, _value);
 		}
 
 		[[nodiscard]]

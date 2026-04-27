@@ -10,7 +10,6 @@ export namespace cmd
         std::vector<ContextT> data{};
     };
 
-    template <typename ContextT>
     class ICommand
     {
     protected:
@@ -21,11 +20,15 @@ export namespace cmd
 
         ICommand(const ICommand &) = delete;
 
+        ICommand(ICommand&&) = delete;
+
         ICommand &operator=(const ICommand &) = delete;
 
-        virtual void Execute(Context<ContextT> &ctx) = 0;
+        ICommand& operator=(ICommand&&) = delete;
 
-        virtual void Undo(Context<ContextT> &ctx) = 0;
+        virtual void Execute() = 0;
+
+        virtual void Undo() = 0;
 
         [[nodiscard]]
         virtual std::string Description() const = 0;
