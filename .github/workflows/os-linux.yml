@@ -1,0 +1,28 @@
+name: Linux Build
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install CMake 4.3
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "4.3"
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y ninja-build g++ cmake
+
+      - name: Verify CMake version
+        run: cmake --version
+
+      - name: Configure
+        run: cmake --preset linux-debug
+
+      - name: Build
+        run: cmake --build --preset linux-debug

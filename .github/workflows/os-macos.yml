@@ -1,0 +1,28 @@
+name: macOS Build
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install CMake 4.3
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "4.3"
+
+      - name: Install Ninja
+        run: brew install ninja
+
+      - name: Verify CMake version
+        run: cmake --version
+
+      - name: Configure
+        run: cmake --preset macos-debug
+
+      - name: Build
+        run: cmake --build --preset macos-debug
