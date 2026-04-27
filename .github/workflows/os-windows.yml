@@ -19,10 +19,8 @@ jobs:
           cmake-version: "4.3.x"
           github-api-token: ${{ secrets.API_TOKEN }}
 
-      - name: Install GCC
-        uses: egor-tensin/setup-gcc@v2
-        with:
-          version: "15"
+      - name: Install MinGW
+        uses: egor-tensin/setup-mingw@v3
 
       - name: Configure
         run: cmake --preset windows-debug

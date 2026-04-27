@@ -13,12 +13,6 @@ jobs:
     secrets:
       API_TOKEN: ${{ secrets.API_TOKEN }}
 
-  macos:
-    name: Build for macOS
-    uses: ./.github/workflows/os-macos.yml
-    secrets:
-      API_TOKEN: ${{ secrets.API_TOKEN }}
-
   windows:
     name: Build for Windows
     uses: ./.github/workflows/os-windows.yml
