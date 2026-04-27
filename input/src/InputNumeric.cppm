@@ -1,5 +1,5 @@
 ﻿/**
- * @file InputNumerics.cppm
+ * @file InputNumeric.cppm
  * @brief Модуль безопасного ввода и валидации числовых типов.
  * @details Предоставляет типобезопасный консольный ввод с проверкой диапазона,
  *          поддержкой кастомных политик обработки ошибок и независимостью от локали.
@@ -49,6 +49,9 @@ export namespace nin
     template <NumericType NumT>
     struct ErrorPolicy
     {
+        /** @brief Выводит сообщение об ошибке. */
+        static void report(std::string_view msg) { std::println("{}", msg); }
+
         /** @brief Вызывается при пустом вводе или вводе только пробельных символов. */
         static void report_empty() { std::println("nin::input_numeric: empty input."); }
 
@@ -94,7 +97,6 @@ export namespace nin
                            std::istream &in = std::cin,
                            std::ostream &out = std::cout)
     {
-
         std::string line;
         while (true)
         {

@@ -5,7 +5,8 @@ add_library(nin)
 target_sources(nin
     PUBLIC
     FILE_SET CXX_MODULES
-    FILES src/InputNumerics.cppm
+    FILES
+    src/InputNumeric.cppm
 )
 
 target_compile_features(nin PUBLIC cxx_std_23)
