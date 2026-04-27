@@ -13,10 +13,10 @@ jobs:
       - name: Install CMake 4.3
         uses: jwlawson/actions-setup-cmake@v2
         with:
-          cmake-version: "4.3"
+          cmake-version: "4.3.x"
 
       - name: Install Ninja
-        run: brew install ninja gcc cmake ninja
+        run: brew install ninja
 
       - name: Verify CMake version
         run: cmake --version
