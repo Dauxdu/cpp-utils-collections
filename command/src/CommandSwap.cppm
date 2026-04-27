@@ -8,13 +8,12 @@ export namespace cmd
     class Swap final : public ICommand
     {
     private:
-        Context<ContextT>& _ctx;
+        Context<ContextT> &_ctx;
         std::size_t _index_1 = 0;
         std::size_t _index_2 = 0;
 
     public:
-        Swap(Context<ContextT>& ctx, std::size_t index_1, std::size_t index_2)
-            : _ctx(ctx), _index_1(index_1), _index_2(index_2)
+        Swap(Context<ContextT> &ctx, std::size_t index_1, std::size_t index_2) : _ctx(ctx), _index_1(index_1), _index_2(index_2)
         {
             if (index_1 >= ctx.data.size() || index_2 >= ctx.data.size())
             {

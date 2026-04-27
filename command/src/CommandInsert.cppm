@@ -9,13 +9,12 @@ export namespace cmd
 	class Insert final : public ICommand
 	{
 	private:
-		Context<ContextT>& _ctx;
+		Context<ContextT> &_ctx;
 		std::size_t _index = 0;
 		ContextT _value;
 
 	public:
-		Insert(Context<ContextT>& ctx, std::size_t index, ContextT value)
-			: _ctx(ctx), _index(index), _value(value) 
+		Insert(Context<ContextT> &ctx, std::size_t index, ContextT value) : _ctx(ctx), _index(index), _value(value)
 		{
 			if (index >= ctx.data.size())
 			{

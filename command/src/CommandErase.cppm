@@ -9,13 +9,12 @@ export namespace cmd
 	class Erase final : public ICommand
 	{
 	private:
-		Context<ContextT>& _ctx;
+		Context<ContextT> &_ctx;
 		std::size_t _index = 0;
 		ContextT _value;
 
 	public:
-		Erase(Context<ContextT>& ctx, std::size_t index)
-			: _ctx(ctx), _index(index) 
+		Erase(Context<ContextT> &ctx, std::size_t index) : _ctx(ctx), _index(index)
 		{
 			if (index >= ctx.data.size())
 			{
