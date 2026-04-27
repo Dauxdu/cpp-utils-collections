@@ -15,10 +15,9 @@ jobs:
 
       - name: Install CMake 4.3.2
         run: |
-          curl -sL https://github.com/Kitware/CMake/releases/download/v4.3.2/cmake-4.3.2-windows-x86_64.msi -o cmake.msi
-          msiexec /i cmake.msi /quiet /norestart
-          echo "C:\Program Files\CMake\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          cmake --version
+          curl -sL https://github.com/Kitware/CMake/releases/download/v4.3.2/cmake-4.3.2-windows-x86_64.zip -o cmake.zip
+          Expand-Archive -Path cmake.zip -DestinationPath C:\tools\cmake-4.3.2
+          echo "CMAKE_BIN=C:\tools\cmake-4.3.2\bin" >> $env:GITHUB_ENV
 
       - name: Enable Developer Command Prompt
         uses: ilammy/msvc-dev-cmd@v1.13.0
