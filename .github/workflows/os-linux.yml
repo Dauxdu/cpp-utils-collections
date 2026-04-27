@@ -10,13 +10,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install CMake 4.3
-        uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: "4.3"
-
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y ninja-build g++ cmake
+        run: sudo apt update && sudo apt install -y build-essential gcc g++ cmake ninja-build
 
       - name: Verify CMake version
         run: cmake --version

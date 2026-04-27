@@ -15,6 +15,6 @@ jobs:
     name: Build for macOS
     uses: ./.github/workflows/os-macos.yml
 
-  windows:
-    name: Build for Windows
-    uses: ./.github/workflows/os-windows.yml
+  #windows:
+  #  name: Build for Windows
+  #  uses: ./.github/workflows/os-windows.yml

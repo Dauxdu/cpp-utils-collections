@@ -16,7 +16,7 @@ jobs:
           cmake-version: "4.3"
 
       - name: Install Ninja
-        run: brew install ninja
+        run: brew install ninja gcc cmake ninja
 
       - name: Verify CMake version
         run: cmake --version
