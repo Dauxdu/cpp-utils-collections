@@ -14,10 +14,9 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Install CMake 4.3.2
-        run: |
-          curl -sL https://github.com/Kitware/CMake/releases/download/v4.3.2/cmake-4.3.2-windows-x86_64.zip -o cmake.zip
-          Expand-Archive -Path cmake.zip -DestinationPath C:\tools\cmake-4.3.2
-          echo "CMAKE_BIN=C:\tools\cmake-4.3.2\bin" >> $env:GITHUB_ENV
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: "4.3.2"
 
       - name: Enable Developer Command Prompt
         uses: ilammy/msvc-dev-cmd@v1.13.0
