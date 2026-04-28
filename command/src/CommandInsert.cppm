@@ -12,6 +12,7 @@ export namespace cmd
 		Context<ContextT> &_ctx;
 		std::size_t _index = 0;
 		ContextT _value;
+		std::string _description;
 
 	public:
 		Insert(Context<ContextT> &ctx, std::size_t index, ContextT value) 
@@ -21,6 +22,7 @@ export namespace cmd
 			{
 				throw std::out_of_range("cmd::Insert: index out of range");
 			}
+			_description = std::format("Insert element {} at index {} by ", value, index);
 		};
 
 		void Execute() override
@@ -36,7 +38,7 @@ export namespace cmd
 		[[nodiscard]]
 		std::string Description() const override
 		{
-			return std::format("{} was inserted by index {}", _value, _index);
+			return _description;
 		}
 	};
 }

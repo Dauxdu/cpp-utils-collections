@@ -12,6 +12,7 @@ export namespace cmd
         Context<ContextT> &_ctx;
         std::size_t _index_1 = 0;
         std::size_t _index_2 = 0;
+        std::string _description;
 
     public:
         Swap(Context<ContextT> &ctx, std::size_t index_1, std::size_t index_2) : _ctx(ctx), _index_1(index_1), _index_2(index_2)
@@ -20,6 +21,7 @@ export namespace cmd
             {
                 throw std::out_of_range("cmd::Swap: index out of range");
             }
+            _description = std::format("Swap element at index {} with element at index {}", index_1, index_2);
         }
 
         void Execute() override
@@ -39,7 +41,7 @@ export namespace cmd
         [[nodiscard]]
         std::string Description() const override
         {
-            return std::format("The value by index {} and by index {} has been swapped", _index_1, _index_2);
+            return _description;
         }
     };
 }

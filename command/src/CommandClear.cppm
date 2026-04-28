@@ -11,10 +11,11 @@ export namespace cmd
 	private:
 		Context<ContextT>& _ctx;
 		Context<ContextT> _backup_ctx;
+		std::string _description;
 
 	public:
 		Clear(Context<ContextT>& ctx)
-			: _ctx(ctx) {}
+			: _ctx(ctx), _description(std::format("Clear data (size: {})", ctx.data.size())) {}
 
 		void Execute() override
 		{
@@ -31,7 +32,7 @@ export namespace cmd
 		[[nodiscard]]
 		std::string Description() const override
 		{
-			return std::format("Clear context (size: {})", _backup_ctx.data.size());
+			return _description;
 		}
 	};
 }

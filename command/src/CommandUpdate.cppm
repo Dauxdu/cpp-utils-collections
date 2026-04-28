@@ -12,6 +12,7 @@ export namespace cmd
 		<Context<ContextT>>& _cmd;
 		std::size_t _index;
 		ContextT _value;
+		std::string _description;
 
 	public:
 		Update(Context<ContextT>& cmd, std::size_t index, ContextT value)
@@ -21,6 +22,7 @@ export namespace cmd
 			{
 				throw std::out_of_range("cmd::Update: index out of range");
 			}
+			_description = std::format("Update element {} at index {}", value, index);
 		}
 
 		void Execute() override
@@ -36,7 +38,7 @@ export namespace cmd
 		[[nodiscard]]
 		std::string Description() const override
 		{
-			return std::format("Update index {} to '{}'", _index, _value);
+			return _description;
 		}
 	};
 }

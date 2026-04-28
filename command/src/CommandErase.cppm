@@ -12,6 +12,7 @@ export namespace cmd
 		Context<ContextT> &_ctx;
 		std::size_t _index = 0;
 		ContextT _value;
+		std::string _description;
 
 	public:
 		Erase(Context<ContextT> &ctx, std::size_t index) : _ctx(ctx), _index(index)
@@ -20,6 +21,7 @@ export namespace cmd
 			{
 				throw std::out_of_range("cmd::Erase: index out of range");
 			}
+			_description = std::format("Erase element at index{}", index);
 		}
 
 		void Execute() override
@@ -36,7 +38,7 @@ export namespace cmd
 		[[nodiscard]]
 		std::string Description() const override
 		{
-			return std::format("{} was erased by index {}", _value, _index);
+			return _description;
 		}
 	};
 }
