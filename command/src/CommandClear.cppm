@@ -31,7 +31,7 @@ export namespace cmd
 		[[nodiscard]]
 		std::string Description() const override
 		{
-			return std::format("Clear {}", _backup_ctx.data);
+			return std::format("Clear context (size: {})", _backup_ctx.data.size());
 		}
 	};
 }

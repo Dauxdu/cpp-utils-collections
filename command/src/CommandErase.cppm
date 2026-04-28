@@ -36,7 +36,7 @@ export namespace cmd
 		[[nodiscard]]
 		std::string Description() const override
 		{
-			return std::format("Erase {} by index {}.", _value, _index);
+			return std::format("{} was erased by index {}", _value, _index);
 		}
 	};
 }

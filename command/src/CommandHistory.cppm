@@ -81,7 +81,7 @@ export namespace cmd
         {
             if (!cmd)
             {
-                throw std::invalid_argument("Error! Not a command.");
+                throw std::invalid_argument("cmd::History: not a command.");
             }
 
             cmd->Execute();

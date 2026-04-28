@@ -35,7 +35,7 @@ export namespace cmd
 		[[nodiscard]]
 		std::string Description() const override
 		{
-			return std::format("Insert {} by index {}.", _value, _index);
+			return std::format("{} was inserted by index {}", _value, _index);
 		}
 	};
 }
