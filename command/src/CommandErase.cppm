@@ -30,7 +30,7 @@ export namespace cmd
 
 		void Undo() override
 		{
-			_ctx.data.insert(_ctx.data.begin() + _index, _value);
+			_ctx.data.insert(_ctx.data.begin() + _index, std::move(_value));
 		}
 
 		[[nodiscard]]
