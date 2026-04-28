@@ -14,7 +14,8 @@ export namespace cmd
 		ContextT _value;
 
 	public:
-		Insert(Context<ContextT> &ctx, std::size_t index, ContextT value) : _ctx(ctx), _index(index), _value(value)
+		Insert(Context<ContextT> &ctx, std::size_t index, ContextT value) 
+			: _ctx(ctx), _index(index), _value(std::move(value))
 		{
 			if (index >= ctx.data.size())
 			{

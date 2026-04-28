@@ -6,7 +6,7 @@ import ICommand;
 export namespace cmd
 {
 	template <typename ContextT>
-	class Clear : public ICommand
+	class Clear final : public ICommand
 	{
 	private:
 		Context<ContextT>& _ctx;
