@@ -1,6 +1,7 @@
 ﻿export module CommandSwap;
 
 import std;
+import ICommand;
 
 export namespace cmd
 {
