@@ -1,5 +1,4 @@
 export module MenuLab;
-
 import std;
 
 //👍👍👍👍👍👍👍👍👍👍👍👍
@@ -42,14 +41,9 @@ export struct DefaultOutputPolicy {
     static void Println() { std::println(); }
 };
 
-export struct MenuItemExecutable {
-    std::string Name;
-    std::function<void()> Action;
-
-    template<typename Func>
-    MenuItemExecutable(std::string n, Func&& f)
-        : Name(std::move(n)), Action(std::forward<Func>(f))
-    {}
+export struct ICommand {
+    virtual ~ICommand() = default;
+    virtual void Execute() const = 0;
 };
 
 export struct MenuItemReading {
@@ -57,7 +51,25 @@ export struct MenuItemReading {
     std::string Value;
 };
 
-export template<typename InputPolicy = DefaultInputPolicy, typename OutputPolicy = DefaultOutputPolicy>
+export struct MenuItemExecutable {
+    std::string Name;
+    std::unique_ptr<ICommand> Action;
+
+    MenuItemExecutable(std::string n, std::unique_ptr<ICommand> cmd)
+        : Name(std::move(n)), Action(std::move(cmd)) {}
+};
+
+namespace detail {
+    template<typename Func>
+    struct CallableCommand final : ICommand {
+        Func func;
+        explicit CallableCommand(Func f) : func(std::move(f)) {}
+        void Execute() const override { func(); }
+    };
+}
+
+export template<typename InputPolicy = DefaultInputPolicy, 
+                typename OutputPolicy = DefaultOutputPolicy>
 class Menu {
 private:
     std::vector<MenuItemReading> _readonly;
@@ -67,23 +79,25 @@ public:
     Menu() = default;
 
     Menu(std::vector<MenuItemReading> ro, std::vector<MenuItemExecutable> ex)
-        : _readonly(std::move(ro)), _executable(std::move(ex))
-    {}
+        : _readonly(std::move(ro)), _executable(std::move(ex)) {}
 
     void AddReadonly(std::string name, std::string value) {
         _readonly.push_back({std::move(name), std::move(value)});
     }
 
-    void AddExecutable(std::string name, std::function<void()> action) {
-        _executable.emplace_back(std::move(name), std::move(action));
+    void AddExecutable(std::string name, std::unique_ptr<ICommand> cmd) {
+        _executable.emplace_back(std::move(name), std::move(cmd));
     }
 
     template<typename Func>
     void AddExecutable(std::string name, Func&& f) {
-        _executable.emplace_back(std::move(name), std::forward<Func>(f));
+        _executable.emplace_back(
+            std::move(name),
+            std::make_unique<detail::CallableCommand<std::decay_t<Func>>>(std::forward<Func>(f))
+        );
     }
 
-    void ShowHeader() const {
+    void ShowHeader() const noexcept {
         if (_readonly.empty()) return;
         OutputPolicy::Println("\n------------------------------");
         for (const auto& item : _readonly) {
@@ -92,7 +106,7 @@ public:
         OutputPolicy::Println("------------------------------\n");
     }
 
-    void ShowActions() const {
+    void ShowActions() const noexcept {
         if (_executable.empty()) {
             OutputPolicy::Println("Нет действий.");
             return;
@@ -113,14 +127,14 @@ public:
         ShowActions();
 
         try {
-			std::size_t choice = InputPolicy::GetChoice("Выбор: ", 0, _executable.size());
-		
-			if (choice == 0) {
-				OutputPolicy::Println("Выход.");
-				return 1;
-			}
+            std::size_t choice = InputPolicy::GetChoice("Выбор: ", 0, _executable.size());
+        
+            if (choice == 0) {
+                OutputPolicy::Println("Выход.");
+                return 1;
+            }
 
-            _executable[choice - 1].Action();
+            _executable[choice - 1].Action->Execute();
         } catch (const std::exception& e) {
             OutputPolicy::Println("Ошибка: " + std::string(e.what()));
         }
