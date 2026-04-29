@@ -8,11 +8,9 @@ export namespace cmd
     class CommandHistory
     {
     private:
-        std::size_t _max_history{};
-
-        std::deque<std::unique_ptr<ICommand>> _undo_cmds{};
-
-        std::deque<std::unique_ptr<ICommand>> _redo_cmds{};
+        std::size_t _max_history = 0;
+        std::deque<std::unique_ptr<ICommand>> _undo_cmds;
+        std::deque<std::unique_ptr<ICommand>> _redo_cmds;
 
         void Trim() noexcept
         {

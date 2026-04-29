@@ -9,16 +9,15 @@ export namespace cmd
 	class Update final : public ICommand
 	{
 	private:
-		<Context<ContextT>>& _cmd;
-		std::size_t _index;
+		Context<ContextT> &_cmd;
+		std::size_t _index = 0;
 		ContextT _value;
 		std::string _description;
 
 	public:
-		Update(Context<ContextT>& cmd, std::size_t index, ContextT value)
-			: _cmd(cmd), _index(index), _value(std::move(value))
+		Update(Context<ContextT> &cmd, std::size_t index, ContextT value) : _cmd(cmd), _index(index), _value(std::move(value))
 		{
-			if (_index >= _cmd.get().data.size())
+			if (_index >= _cmd.data.size())
 			{
 				throw std::out_of_range("cmd::Update: index out of range");
 			}

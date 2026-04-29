@@ -7,10 +7,12 @@ target_sources(cmd
     FILE_SET CXX_MODULES
     FILES
     src/ICommand.cppm
+    src/CommandClear.cppm
     src/CommandErase.cppm
     src/CommandHistory.cppm
     src/CommandInsert.cppm
     src/CommandSwap.cppm
+    src/CommandUpdate.cppm
 )
 
 target_compile_features(cmd PUBLIC cxx_std_23)
