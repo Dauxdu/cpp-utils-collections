@@ -1,85 +1,130 @@
 export module MenuLab;
 
 import std;
+
+//👍👍👍👍👍👍👍👍👍👍👍👍
+/*
 import nin;
+struct SafeInputPolicy {
+    static size_t GetChoice(std::string_view prompt, size_t min, size_t max) {
+        return nin::input_numeric<size_t>(prompt, min, max);
+    }
+};
+using MyMenu = Menu<SafeInputPolicy, DefaultOutputPolicy>;
+*/
 
-// ... --- ...
-
-export struct menu_item {
-    std::string name;
-    std::function<void()> action;
-
-    template<typename F>
-    menu_item(std::string n, F&& f)
-        : name(std::move(n)),
-          action(std::forward<F>(f)) {}
+//👎👎👎
+export struct DefaultInputPolicy {
+    static std::size_t GetChoice(std::string_view prompt, std::size_t min, std::size_t max) {
+        if (!prompt.empty()) std::print("{} ", prompt);
+        
+        std::size_t value;
+        
+        if (!(std::cin >> value)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            throw std::runtime_error("DefaultInputPolicy: invalid input");
+        }
+        
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        
+        if (value < min || value > max) {
+            throw std::runtime_error("DefaultInputPolicy: value out of range");
+        }
+        
+        return value;
+    }
 };
 
-export class Menu {
+export struct DefaultOutputPolicy {
+    static void Print(std::string_view s) { std::print(s); }
+    static void Println(std::string_view s) { std::println(s); }
+    static void Println() { std::println(); }
+};
+
+export struct MenuItemExecutable {
+    std::string Name;
+    std::function<void()> Action;
+
+    template<typename Func>
+    MenuItemExecutable(std::string n, Func&& f)
+        : Name(std::move(n)), Action(std::forward<Func>(f))
+    {}
+};
+
+export struct MenuItemReading {
+    std::string Name;
+    std::string Value;
+};
+
+export template<typename InputPolicy = DefaultInputPolicy, typename OutputPolicy = DefaultOutputPolicy>
+class Menu {
 private:
-    int _lab_num{};
-    std::string _author;
-    int _variant{};
-    std::vector<menu_item> _items;
+    std::vector<MenuItemReading> _readonly;
+    std::vector<MenuItemExecutable> _executable;
 
 public:
-    Menu(int lab_num,
-         std::string author,
-         int variant,
-         std::vector<menu_item> items)
-        : _lab_num(lab_num),
-          _author(std::move(author)),
-          _variant(variant),
-          _items(std::move(items))
+    Menu() = default;
+
+    Menu(std::vector<MenuItemReading> ro, std::vector<MenuItemExecutable> ex)
+        : _readonly(std::move(ro)), _executable(std::move(ex))
     {}
 
-    template<typename F>
-    void add_item(std::string name, F&& f) {
-        _items.emplace_back(std::move(name), std::forward<F>(f));
+    void AddReadonly(std::string name, std::string value) {
+        _readonly.push_back({std::move(name), std::move(value)});
     }
 
-    void add_item(menu_item item) {
-        _items.emplace_back(std::move(item));
+    void AddExecutable(std::string name, std::function<void()> action) {
+        _executable.emplace_back(std::move(name), std::move(action));
     }
 
-    void print_header() const {
-        std::println("\n------------------------------");
-        std::println("Лабораторная работа №: {}", _lab_num);
-        std::println("Автор: {}", _author);
-        std::println("Вариант №: {}", _variant);
-        std::println("------------------------------\n");
+    template<typename Func>
+    void AddExecutable(std::string name, Func&& f) {
+        _executable.emplace_back(std::move(name), std::forward<Func>(f));
     }
 
-    void run() {
-        if (_items.empty()) {
-            std::println("Меню пустое");
+    void ShowHeader() const {
+        if (_readonly.empty()) return;
+        OutputPolicy::Println("\n------------------------------");
+        for (const auto& item : _readonly) {
+            OutputPolicy::Println(item.Name + ": " + item.Value);
+        }
+        OutputPolicy::Println("------------------------------\n");
+    }
+
+    void ShowActions() const {
+        if (_executable.empty()) {
+            OutputPolicy::Println("Нет действий.");
             return;
         }
-
-        while (true) {
-            for (std::size_t i = 0; i < _items.size(); ++i) {
-                std::println("[{}] {}", i + 1, _items[i].name);
-            }
-            std::println("[0] Выход");
-
-            int choice = nin::input_numeric<int>(
-                "Выбор: ",
-                0,
-                static_cast<int>(_items.size())
-            );
-
-            if (choice == 0) {
-                return;
-            }
-
-            auto& item = _items[choice - 1];
-
-            try {
-                item.action();
-            }
-            catch (const std::exception& e) {
-                std::println("Ошибка: {}", e.what());
-            }
+        for (std::size_t i = 0; i < _executable.size(); ++i) {
+            OutputPolicy::Println("[" + std::to_string(i + 1) + "] " + _executable[i].Name);
         }
+        OutputPolicy::Println("[0] Выход");
+    }
+
+    int Step() {
+        if (_executable.empty()) {
+            OutputPolicy::Println("Нет действий. Завершение.");
+            return 1;
+        }
+
+        ShowHeader();
+        ShowActions();
+
+        try {
+			std::size_t choice = InputPolicy::GetChoice("Выбор: ", 0, _executable.size());
+		
+			if (choice == 0) {
+				OutputPolicy::Println("Выход.");
+				return 1;
+			}
+
+            _executable[choice - 1].Action();
+        } catch (const std::exception& e) {
+            OutputPolicy::Println("Ошибка: " + std::string(e.what()));
+        }
+        OutputPolicy::Println();
+        return 0;
     }
 };
