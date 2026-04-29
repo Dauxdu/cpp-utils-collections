@@ -15,4 +15,4 @@ endif()
 
 add_subdirectory(command)
 add_subdirectory(input)
-# add_subdirectory(menu)
+add_subdirectory(menu)
