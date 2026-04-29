@@ -10,11 +10,7 @@ jobs:
   linux:
     name: Build for Linux
     uses: ./.github/workflows/os-linux.yml
-    secrets:
-      API_TOKEN: ${{ secrets.API_TOKEN }}
 
   windows:
     name: Build for Windows
     uses: ./.github/workflows/os-windows.yml
-    secrets:
-      API_TOKEN: ${{ secrets.API_TOKEN }}
