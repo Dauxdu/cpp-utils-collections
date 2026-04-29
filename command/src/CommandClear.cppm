@@ -10,7 +10,7 @@ export namespace cmd
 	{
 	private:
 		Context<ContextT> &_ctx;
-		Context<ContextT> _backup_ctx;
+		Context<ContextT> _old_ctx;
 		std::string _description;
 
 	public:
@@ -18,12 +18,12 @@ export namespace cmd
 
 		void Execute() override
 		{
-			_backup_ctx = std::move(_ctx);
+			_old_ctx = std::move(_ctx);
 		}
 
 		void Undo() override
 		{
-			_ctx = std::move(_backup_ctx);
+			_ctx = std::move(_old_ctx);
 		}
 
 		[[nodiscard]]
