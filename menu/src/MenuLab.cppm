@@ -36,8 +36,8 @@ export struct DefaultInputPolicy {
 };
 
 export struct DefaultOutputPolicy {
-    static void Print(std::string_view s) { std::print(s); }
-    static void Println(std::string_view s) { std::println(s); }
+    static void Print(std::string_view s) { std::print("{}",s); }
+    static void Println(std::string_view s) { std::println("{}",s); }
     static void Println() { std::println(); }
 };
 
