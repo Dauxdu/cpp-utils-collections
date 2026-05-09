@@ -14,5 +14,3 @@ target_sources(cmd
     src/CommandSwap.cppm
     src/CommandUpdate.cppm
 )
-
-target_compile_features(cmd PUBLIC cxx_std_23)

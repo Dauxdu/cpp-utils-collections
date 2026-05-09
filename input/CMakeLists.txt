@@ -8,5 +8,3 @@ target_sources(nin
     FILES
     src/InputNumeric.cppm
 )
-
-target_compile_features(nin PUBLIC cxx_std_23)
