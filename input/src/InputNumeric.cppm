@@ -70,7 +70,7 @@ export namespace nin
             throw std::out_of_range("nin::input_numeric: value out of type range.");
         }
 
-        if (result.ptr != trimmed.end())
+        if (result.ptr != trimmed.data() + trimmed.size())
         {
             throw std::invalid_argument("nin::input_numeric: trailing characters detected.");
         }
