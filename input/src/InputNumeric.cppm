@@ -5,26 +5,15 @@
  * @author CherryJell & Dauxdu
  * @date 2026
  */
-export module nin;
+export module inx:numeric;
 
 import std;
+import :helper;
 
-export namespace nin
+export namespace inx
 {
     template <typename ValueT>
     concept NumericType = std::is_arithmetic_v<ValueT> && !std::is_same_v<ValueT, bool>;
-
-    [[nodiscard]] constexpr std::string_view trim(std::string_view raw_str) noexcept
-    {
-        constexpr std::string_view whitespace = " \t\n\r\f\v";
-        auto start = raw_str.find_first_not_of(whitespace);
-        if (start == std::string_view::npos)
-        {
-            return {};
-        }
-        auto end = raw_str.find_last_not_of(whitespace);
-        return raw_str.substr(start, end - start + 1);
-    }
 
     template <NumericType NumericT>
     [[nodiscard]] NumericT input_numeric(NumericT min_value = std::numeric_limits<NumericT>::min(),
@@ -34,18 +23,18 @@ export namespace nin
         std::string line;
         if (!std::getline(in, line))
         {
-            throw std::runtime_error("nin::input_numeric: input stream failure.");
+            throw std::runtime_error("inx::input_numeric: input stream failure.");
         }
 
-        const auto trimmed = trim(line);
+        const auto trimmed = inx::trim(line);
         if (trimmed.empty())
         {
-            throw std::invalid_argument("nin::input_numeric: empty input.");
+            throw std::invalid_argument("inx::input_numeric: empty input.");
         }
 
         if (min_value > max_value)
         {
-            throw std::invalid_argument("nin::input_numeric: min_value > max_value.");
+            throw std::invalid_argument("inx::input_numeric: min_value > max_value.");
         }
 
         NumericT value{};
@@ -62,22 +51,22 @@ export namespace nin
 
         if (result.ec == std::errc::invalid_argument)
         {
-            throw std::invalid_argument("nin::input_numeric: invalid numeric format.");
+            throw std::invalid_argument("inx::input_numeric: invalid numeric format.");
         }
 
         if (result.ec == std::errc::result_out_of_range)
         {
-            throw std::out_of_range("nin::input_numeric: value out of type range.");
+            throw std::out_of_range("inx::input_numeric: value out of type range.");
         }
 
         if (result.ptr != trimmed.data() + trimmed.size())
         {
-            throw std::invalid_argument("nin::input_numeric: trailing characters detected.");
+            throw std::invalid_argument("inx::input_numeric: trailing characters detected.");
         }
 
         if (value < min_value || value > max_value)
         {
-            throw std::out_of_range(std::format("nin::input_numeric: value out of range [{}, {}].", min_value, max_value));
+            throw std::out_of_range(std::format("inx::input_numeric: value out of range [{}, {}].", min_value, max_value));
         }
 
         return value;

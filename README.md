@@ -13,7 +13,7 @@ fetchcontent_makeavailable(cpp_utils)
 
 ```cpp
 import std;
-import nin;
+import inx;
 
 int main()
 {
@@ -22,7 +22,7 @@ int main()
         try
         {
             std::print("Enter a number 0: ");
-            auto value = nin::input_numeric<int>(0, 0);
+            auto value = inx::input_numeric<int>(0, 0);
             std::println("Parsed: {}", value); // 0
             break;
         }
