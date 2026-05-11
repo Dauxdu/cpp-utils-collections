@@ -21,24 +21,24 @@ export namespace inx
                                          std::istream &in = std::cin)
     {
         std::string line;
+        TNumeric value{};
+        std::from_chars_result result;
+
         if (!std::getline(in, line))
         {
-            throw std::runtime_error("inx::input_numeric: input stream failure.");
+            throw std::runtime_error("inx::input_numeric: input stream failure");
         }
 
         const auto trimmed = inx::trim(line);
         if (trimmed.empty())
         {
-            throw std::invalid_argument("inx::input_numeric: empty input.");
+            throw std::invalid_argument("inx::input_numeric: empty input");
         }
 
         if (min_value > max_value)
         {
-            throw std::invalid_argument("inx::input_numeric: min_value > max_value.");
+            throw std::invalid_argument("inx::input_numeric: min_value > max_value");
         }
-
-        TNumeric value{};
-        std::from_chars_result result;
 
         if constexpr (std::integral<TNumeric>)
         {
@@ -51,22 +51,22 @@ export namespace inx
 
         if (result.ec == std::errc::invalid_argument)
         {
-            throw std::invalid_argument("inx::input_numeric: invalid numeric format.");
+            throw std::invalid_argument("inx::input_numeric: invalid numeric format");
         }
 
         if (result.ec == std::errc::result_out_of_range)
         {
-            throw std::out_of_range("inx::input_numeric: value out of type range.");
+            throw std::out_of_range("inx::input_numeric: value out of type range");
         }
 
         if (result.ptr != trimmed.data() + trimmed.size())
         {
-            throw std::invalid_argument("inx::input_numeric: trailing characters detected.");
+            throw std::invalid_argument("inx::input_numeric: trailing characters detected");
         }
 
         if (value < min_value || value > max_value)
         {
-            throw std::out_of_range(std::format("inx::input_numeric: value out of range [{}, {}].", min_value, max_value));
+            throw std::out_of_range(std::format("inx::input_numeric: value out of range [{}, {}]", min_value, max_value));
         }
 
         return value;
