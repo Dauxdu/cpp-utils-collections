@@ -7,7 +7,7 @@ export namespace inx
 {
     template <NumericType T>
     [[nodiscard]] T input_prompt_numeric(const std::string &prompt,
-                                         T min_value = std::numeric_limits<T>::min(),
+                                         T min_value = std::numeric_limits<T>::lowest(),
                                          T max_value = std::numeric_limits<T>::max(),
                                          std::ostream &out = std::cout,
                                          std::istream &in = std::cin)

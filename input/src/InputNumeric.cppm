@@ -16,7 +16,7 @@ export namespace inx
     concept NumericType = std::is_arithmetic_v<TValue> && !std::is_same_v<TValue, bool>;
 
     template <NumericType TNumeric>
-    [[nodiscard]] TNumeric input_numeric(TNumeric min_value = std::numeric_limits<TNumeric>::min(),
+    [[nodiscard]] TNumeric input_numeric(TNumeric min_value = std::numeric_limits<TNumeric>::lowest(),
                                          TNumeric max_value = std::numeric_limits<TNumeric>::max(),
                                          std::istream &in = std::cin)
     {
