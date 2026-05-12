@@ -1,7 +1,7 @@
-﻿export module CommandHistory;
+﻿export module cmd:CommandHistory;
 
 import std;
-import ICommand;
+import :ICommand;
 
 export namespace cmd
 {

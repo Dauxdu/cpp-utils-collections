@@ -1,7 +1,7 @@
-﻿export module EraseCommand;
+﻿export module cmd:CommandErase;
 
 import std;
-import ICommand;
+import :ICommand;
 
 export namespace cmd
 {

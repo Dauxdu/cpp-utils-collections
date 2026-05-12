@@ -1,7 +1,7 @@
-﻿export module InsertCommand;
+﻿export module cmd:CommandInsert;
 
 import std;
-import ICommand;
+import :ICommand;
 
 export namespace cmd
 {

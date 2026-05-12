@@ -1,7 +1,7 @@
-﻿export module CommandSwap;
+﻿export module cmd:CommandSwap;
 
 import std;
-import ICommand;
+import :ICommand;
 
 export namespace cmd
 {

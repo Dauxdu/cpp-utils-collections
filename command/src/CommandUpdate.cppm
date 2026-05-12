@@ -1,7 +1,7 @@
-﻿export module CommandUpdate;
+﻿export module cmd:CommandUpdate;
 
 import std;
-import ICommand;
+import :ICommand;
 
 export namespace cmd
 {

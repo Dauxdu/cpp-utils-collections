@@ -1,7 +1,7 @@
-﻿export module CommandClear;
+﻿export module cmd:CommandClear;
 
 import std;
-import ICommand;
+import :ICommand;
 
 export namespace cmd
 {
