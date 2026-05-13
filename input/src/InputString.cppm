@@ -37,14 +37,7 @@ export namespace inx
             throw std::invalid_argument(std::format("inx::input_string: input '{}' does not match required pattern", trimmed));
         }
 
-        if constexpr (std::same_as<TString, std::string_view>)
-        {
-            return TString{trimmed};
-        }
-        else
-        {
-            return TString{trimmed};
-        }
+        return TString{trimmed};
     }
 
     template <StringType TString = std::string>
