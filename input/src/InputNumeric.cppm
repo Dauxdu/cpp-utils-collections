@@ -76,13 +76,13 @@ export namespace inx
     [[nodiscard]] T input_prompt_numeric(const std::string &prompt,
                                          T min_value = std::numeric_limits<T>::lowest(),
                                          T max_value = std::numeric_limits<T>::max(),
-                                         std::ostream &out = std::cout, std::istream &in = std::cin)
+                                         std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         while (true)
         {
             try
             {
-                out << prompt << std::flush;
+                out << prompt;
                 return input_numeric<T>(min_value, max_value, in);
             }
             catch (const std::runtime_error &e)
