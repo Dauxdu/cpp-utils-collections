@@ -8,6 +8,5 @@ target_sources(inx
     FILES
     src/inx.cppm
     src/InputHelper.cppm
-    src/InputNumericInteractive.cppm
     src/InputNumeric.cppm
 )
