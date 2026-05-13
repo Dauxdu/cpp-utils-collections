@@ -9,4 +9,5 @@ target_sources(inx
     src/inx.cppm
     src/InputHelper.cppm
     src/InputNumeric.cppm
+    src/InputString.cppm
 )
