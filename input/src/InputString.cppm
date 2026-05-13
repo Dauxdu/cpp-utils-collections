@@ -40,6 +40,18 @@ export namespace inx
         return TString{trimmed};
     }
 
+    /**
+     * @brief Перегрузка input_string для строковых литералов-шаблонов.
+     */
+    template <StringType TString = std::string>
+    [[nodiscard]] TString input_string(std::string_view pattern, std::istream &in = std::cin)
+    {
+        const std::regex pattern{std::string{pattern}};
+        {
+            return input_string<TString>(pattern, in);
+        }
+    }
+
     template <StringType TString = std::string>
     [[nodiscard]] TString input_prompt_string(std::string_view prompt, const std::regex &pattern,
                                               std::istream &in = std::cin, std::ostream &out = std::cout)
@@ -66,25 +78,13 @@ export namespace inx
     }
 
     /**
-     * @brief Перегрузка input_string для строковых литералов-шаблонов.
-     */
-    template <StringType TString = std::string>
-    [[nodiscard]] TString input_string(std::string_view pattern_str, std::istream &in = std::cin)
-    {
-        const std::regex pattern{std::string{pattern_str}};
-        {
-            return input_string<TString>(pattern, in);
-        }
-    }
-
-    /**
      * @brief Перегрузка input_prompt_string для строковых литералов-шаблонов.
      */
     template <StringType TString = std::string>
-    [[nodiscard]] TString input_prompt_string(std::string_view prompt, std::string_view pattern_str,
+    [[nodiscard]] TString input_prompt_string(std::string_view prompt, std::string_view pattern,
                                               std::istream &in = std::cin, std::ostream &out = std::cout)
     {
-        const std::regex pattern{std::string{pattern_str}};
+        const std::regex pattern{std::string{pattern}};
         {
             return input_prompt_string<TString>(prompt, pattern, in, out);
         }
