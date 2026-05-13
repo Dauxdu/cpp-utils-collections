@@ -22,7 +22,7 @@ export namespace inx
     {
         std::string line;
         TNumeric value{};
-        std::from_chars_result result;
+        std::from_chars_result result{};
 
         if (!std::getline(in, line))
         {
