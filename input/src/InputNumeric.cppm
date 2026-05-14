@@ -12,8 +12,8 @@ import :helper;
 
 export namespace inx
 {
-    template <typename TValue>
-    concept NumericType = std::is_arithmetic_v<TValue> && !std::is_same_v<TValue, bool>;
+    template <typename T>
+    concept NumericType = std::is_arithmetic_v<T> && !std::is_same_v<T, bool>;
 
     template <NumericType TNumeric>
     [[nodiscard]] TNumeric input_numeric(TNumeric min_value = std::numeric_limits<TNumeric>::lowest(),
@@ -29,7 +29,11 @@ export namespace inx
             throw std::runtime_error("inx::input_numeric: input stream failure");
         }
 
-        const auto trimmed = inx::trim(line);
+        const std::string trimmed = inx::trim(line);
+
+        const char *begin = trimmed.data();
+        const char *end = trimmed.data() + trimmed.size();
+
         if (trimmed.empty())
         {
             throw std::invalid_argument("inx::input_numeric: empty input");
@@ -42,11 +46,11 @@ export namespace inx
 
         if constexpr (std::integral<TNumeric>)
         {
-            result = std::from_chars(trimmed.begin(), trimmed.end(), value);
+            result = std::from_chars(begin, end, value);
         }
         else if constexpr (std::floating_point<TNumeric>)
         {
-            result = std::from_chars(trimmed.begin(), trimmed.end(), value, std::chars_format::general);
+            result = std::from_chars(begin, end, value, std::chars_format::general);
         }
 
         if (result.ec == std::errc::invalid_argument)
@@ -59,7 +63,7 @@ export namespace inx
             throw std::out_of_range("inx::input_numeric: value out of type range");
         }
 
-        if (result.ptr != trimmed.data() + trimmed.size())
+        if (result.ptr != end)
         {
             throw std::invalid_argument("inx::input_numeric: trailing characters detected");
         }

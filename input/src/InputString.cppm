@@ -12,11 +12,7 @@ import :helper;
 
 export namespace inx
 {
-    template <typename T>
-    concept StringType = std::same_as<std::remove_cvref_t<T>, std::string> || std::same_as<std::remove_cvref_t<T>, std::string_view>;
-
-    template <StringType TString = std::string>
-    [[nodiscard]] TString input_string(const std::regex &pattern, std::istream &in = std::cin)
+    [[nodiscard]] std::string input_string(const std::regex &pattern, std::istream &in = std::cin)
     {
         std::string line;
 
@@ -25,7 +21,7 @@ export namespace inx
             throw std::runtime_error("inx::input_string: input stream failure");
         }
 
-        const auto trimmed = inx::trim(line);
+        const std::string trimmed = inx::trim(line);
 
         if (trimmed.empty())
         {
@@ -37,24 +33,20 @@ export namespace inx
             throw std::invalid_argument(std::format("inx::input_string: input '{}' does not match required pattern", trimmed));
         }
 
-        return TString{trimmed};
+        return trimmed;
     }
 
     /**
      * @brief Перегрузка input_string для строковых литералов-шаблонов.
      */
-    template <StringType TString = std::string>
-    [[nodiscard]] TString input_string(std::string_view pattern, std::istream &in = std::cin)
+    [[nodiscard]] std::string input_string(const std::string &pattern, std::istream &in = std::cin)
     {
-        const std::regex pattern_str{std::string{pattern}};
-        {
-            return input_string<TString>(pattern_str, in);
-        }
+        const std::regex pattern_str{pattern};
+        return input_string(pattern_str, in);
     }
 
-    template <StringType TString = std::string>
-    [[nodiscard]] TString input_string(std::string_view prompt, const std::regex &pattern,
-                                       std::istream &in = std::cin, std::ostream &out = std::cout)
+    [[nodiscard]] std::string input_string(const std::string &prompt, const std::regex &pattern,
+                                           std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         while (true)
         {
@@ -62,7 +54,7 @@ export namespace inx
             {
                 out << prompt;
 
-                return input_string<TString>(pattern, in);
+                return input_string(pattern, in);
             }
             catch (const std::invalid_argument &e)
             {
@@ -78,13 +70,10 @@ export namespace inx
     /**
      * @brief Перегрузка input_prompt_string для строковых литералов-шаблонов.
      */
-    template <StringType TString = std::string>
-    [[nodiscard]] TString input_string(std::string_view prompt, std::string_view pattern,
-                                       std::istream &in = std::cin, std::ostream &out = std::cout)
+    [[nodiscard]] std::string input_string(const std::string &prompt, const std::string &pattern,
+                                           std::istream &in = std::cin, std::ostream &out = std::cout)
     {
-        const std::regex pattern_str{std::string{pattern}};
-        {
-            return input_string<TString>(prompt, pattern_str, in, out);
-        }
+        const std::regex pattern_str{pattern};
+        return input_string(prompt, pattern_str, in, out);
     }
 }

@@ -4,11 +4,11 @@ import std;
 
 namespace inx
 {
-    [[nodiscard]] constexpr std::string_view trim(std::string_view raw_str) noexcept
+    [[nodiscard]] std::string trim(const std::string &raw_str)
     {
-        constexpr std::string_view whitespace = " \t\n\r\f\v";
+        const std::string whitespace = " \t\n\r\f\v";
         auto start = raw_str.find_first_not_of(whitespace);
-        if (start == std::string_view::npos)
+        if (start == std::string::npos)
         {
             return {};
         }
