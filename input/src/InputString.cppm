@@ -44,11 +44,11 @@ export namespace inx
      * @brief Перегрузка input_string для строковых литералов-шаблонов.
      */
     template <StringType TString = std::string>
-    [[nodiscard]] TString input_string(std::string_view pattern_str, std::istream &in = std::cin)
+    [[nodiscard]] TString input_string(std::string_view pattern, std::istream &in = std::cin)
     {
-        const std::regex pattern{std::string{pattern_str}};
+        const std::regex pattern_str{std::string{pattern}};
         {
-            return input_string<TString>(pattern, in);
+            return input_string<TString>(pattern_str, in);
         }
     }
 
@@ -61,14 +61,12 @@ export namespace inx
             try
             {
                 out << prompt;
-                out.flush();
 
                 return input_string<TString>(pattern, in);
             }
             catch (const std::invalid_argument &e)
             {
                 out << "Error: " << e.what() << '\n';
-                continue;
             }
             catch (const std::runtime_error &e)
             {
