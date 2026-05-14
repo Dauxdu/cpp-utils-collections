@@ -73,10 +73,10 @@ export namespace inx
     }
 
     template <NumericType T>
-    [[nodiscard]] T input_prompt_numeric(const std::string &prompt,
-                                         T min_value = std::numeric_limits<T>::lowest(),
-                                         T max_value = std::numeric_limits<T>::max(),
-                                         std::istream &in = std::cin, std::ostream &out = std::cout)
+    [[nodiscard]] T input_numeric(const std::string &prompt,
+                                  T min_value = std::numeric_limits<T>::lowest(),
+                                  T max_value = std::numeric_limits<T>::max(),
+                                  std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         while (true)
         {

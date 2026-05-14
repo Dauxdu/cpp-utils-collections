@@ -53,8 +53,8 @@ export namespace inx
     }
 
     template <StringType TString = std::string>
-    [[nodiscard]] TString input_prompt_string(std::string_view prompt, const std::regex &pattern,
-                                              std::istream &in = std::cin, std::ostream &out = std::cout)
+    [[nodiscard]] TString input_string(std::string_view prompt, const std::regex &pattern,
+                                       std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         while (true)
         {
@@ -81,12 +81,12 @@ export namespace inx
      * @brief Перегрузка input_prompt_string для строковых литералов-шаблонов.
      */
     template <StringType TString = std::string>
-    [[nodiscard]] TString input_prompt_string(std::string_view prompt, std::string_view pattern_str,
-                                              std::istream &in = std::cin, std::ostream &out = std::cout)
+    [[nodiscard]] TString input_string(std::string_view prompt, std::string_view pattern,
+                                       std::istream &in = std::cin, std::ostream &out = std::cout)
     {
-        const std::regex pattern{std::string{pattern_str}};
+        const std::regex pattern_str{std::string{pattern}};
         {
-            return input_prompt_string<TString>(prompt, pattern, in, out);
+            return input_string<TString>(prompt, pattern_str, in, out);
         }
     }
 }
