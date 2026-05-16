@@ -17,7 +17,7 @@ export namespace cmd
 	public:
 		Insert(Context<ContextT> &ctx, std::size_t index, ContextT value) : _ctx(ctx), _index(index), _value(std::move(value))
 		{
-			if (index >= ctx.data.size())
+			if ((index >= ctx.data.size()) && (_index != 0))
 			{
 				throw std::out_of_range("cmd::Insert: index out of range");
 			}
