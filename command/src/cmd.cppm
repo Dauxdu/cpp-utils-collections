@@ -2,6 +2,7 @@ export module cmd;
 
 import :ICommand;
 
+export import :ICpmmand;
 export import :CommandClear;
 export import :CommandErase;
 export import :CommandHistory;
