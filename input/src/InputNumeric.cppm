@@ -20,6 +20,12 @@ export namespace inx
                                          TNumeric max_value = std::numeric_limits<TNumeric>::max(),
                                          std::istream &in = std::cin)
     {
+
+        if (min_value > max_value)
+        {
+            throw std::logic_error("inx::input_numeric: min_value > max_value");
+        }
+
         std::string line;
         TNumeric value{};
         std::from_chars_result result{};
@@ -37,11 +43,6 @@ export namespace inx
         if (trimmed.empty())
         {
             throw std::invalid_argument("inx::input_numeric: empty input");
-        }
-
-        if (min_value > max_value)
-        {
-            throw std::invalid_argument("inx::input_numeric: min_value > max_value");
         }
 
         if constexpr (std::integral<TNumeric>)
