@@ -15,10 +15,10 @@ export namespace inx
     template <typename T>
     concept NumericType = std::is_arithmetic_v<T> && !std::is_same_v<T, bool>;
 
-    template <NumericType TNumeric>
-    [[nodiscard]] TNumeric input_numeric(TNumeric min_value = std::numeric_limits<TNumeric>::lowest(),
-                                         TNumeric max_value = std::numeric_limits<TNumeric>::max(),
-                                         std::istream &in = std::cin)
+    template <NumericType T>
+    [[nodiscard]] T input_numeric(T min_value = std::numeric_limits<T>::lowest(),
+                                  T max_value = std::numeric_limits<T>::max(),
+                                  std::istream &in = std::cin)
     {
 
         if (min_value > max_value)
@@ -26,8 +26,8 @@ export namespace inx
             throw std::logic_error("inx::input_numeric: min_value > max_value");
         }
 
+        T value{};
         std::string line;
-        TNumeric value{};
         std::from_chars_result result{};
 
         if (!std::getline(in, line))
@@ -45,11 +45,11 @@ export namespace inx
             throw std::invalid_argument("inx::input_numeric: empty input");
         }
 
-        if constexpr (std::integral<TNumeric>)
+        if constexpr (std::integral<T>)
         {
             result = std::from_chars(begin, end, value);
         }
-        else if constexpr (std::floating_point<TNumeric>)
+        else if constexpr (std::floating_point<T>)
         {
             result = std::from_chars(begin, end, value, std::chars_format::general);
         }
