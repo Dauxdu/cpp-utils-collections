@@ -103,6 +103,41 @@ int main()
 }
 ```
 
+### `cmd::CommandHistory` example
+
+```cpp
+import std;
+import cmd;
+
+imt main()
+{
+    cmd::CommandHistory history;
+	cmd::Context<int> ctx;
+
+    try
+    {
+        history.Execute(std::make_unique<cmd::Insert<int>>(ctx, 0, 10));
+    }
+    catch(const std::out_of_range &e)
+    {
+        std::println("Error: {}", e.what());
+        return 0;
+    }
+
+	if (history.CanUndo())
+	{
+		history.Undo();
+	}
+
+	if (history.CanRedo())
+	{
+		history.Redo();
+	}
+
+    return 0;
+}
+```
+
 ## TODO
 
 ### Input
