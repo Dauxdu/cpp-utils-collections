@@ -53,16 +53,16 @@ export namespace inx
             try
             {
                 out << prompt;
-
                 return input_string(pattern, in);
-            }
-            catch (const std::invalid_argument &e)
-            {
-                out << "Error: " << e.what() << '\n';
             }
             catch (const std::runtime_error &e)
             {
+                out << e.what() << '\n';
                 throw;
+            }
+            catch (const std::exception &e)
+            {
+                out << e.what() << '\n';
             }
         }
     }
