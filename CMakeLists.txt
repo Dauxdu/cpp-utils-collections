@@ -18,7 +18,5 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/utf-8 /W4)
 endif()
 
-add_subdirectory(dev)
 add_subdirectory(command)
 add_subdirectory(input)
-# add_subdirectory(menu)
