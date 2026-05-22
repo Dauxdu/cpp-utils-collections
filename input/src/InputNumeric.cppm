@@ -90,14 +90,14 @@ export namespace inx
                 out << prompt;
                 return input_numeric<T>(min_value, max_value, in);
             }
-            catch (const std::runtime_error &e)
+            catch (const std::runtime_error &error)
             {
-                out << e.what() << '\n';
+                out << error.what() << '\n';
                 throw;
             }
-            catch (const std::exception &e)
+            catch (const std::exception &error)
             {
-                out << e.what() << '\n';
+                out << error.what() << '\n';
             }
         }
     }
