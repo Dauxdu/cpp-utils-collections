@@ -1,11 +1,4 @@
-﻿/**
- * @file InputNumeric.cppm
- * @brief Модуль безопасного ввода и валидации числовых типов.
- * @details Предоставляет типобезопасный консольный ввод с проверкой диапазона.
- * @author CherryJell & Dauxdu
- * @date 2026
- */
-export module inx:numeric;
+﻿export module inx:numeric;
 
 import std;
 import :helper;
@@ -15,10 +8,10 @@ export namespace inx
     template <typename T>
     concept NumericType = std::is_arithmetic_v<T> && !std::is_same_v<T, bool>;
 
-    template <NumericType T>
-    [[nodiscard]] T input_numeric(T min_value = std::numeric_limits<T>::lowest(),
-                                  T max_value = std::numeric_limits<T>::max(),
-                                  std::istream &in = std::cin)
+    template <NumericType TValue>
+    [[nodiscard]] TValue input_numeric(TValue min_value = std::numeric_limits<TValue>::lowest(),
+                                       TValue max_value = std::numeric_limits<TValue>::max(),
+                                       std::istream &in = std::cin)
     {
 
         if (min_value > max_value)
@@ -26,7 +19,7 @@ export namespace inx
             throw std::logic_error("inx::input_numeric: min_value > max_value");
         }
 
-        T value{};
+        TValue value{};
         std::string line;
         std::from_chars_result result{};
 
@@ -45,11 +38,11 @@ export namespace inx
             throw std::invalid_argument("inx::input_numeric: empty input");
         }
 
-        if constexpr (std::integral<T>)
+        if constexpr (std::integral<TValue>)
         {
             result = std::from_chars(begin, end, value);
         }
-        else if constexpr (std::floating_point<T>)
+        else if constexpr (std::floating_point<TValue>)
         {
             result = std::from_chars(begin, end, value, std::chars_format::general);
         }
@@ -77,18 +70,18 @@ export namespace inx
         return value;
     }
 
-    template <NumericType T>
-    [[nodiscard]] T input_numeric(const std::string &prompt,
-                                  T min_value = std::numeric_limits<T>::lowest(),
-                                  T max_value = std::numeric_limits<T>::max(),
-                                  std::istream &in = std::cin, std::ostream &out = std::cout)
+    template <NumericType TValue>
+    [[nodiscard]] TValue input_numeric(const std::string &prompt,
+                                       TValue min_value = std::numeric_limits<TValue>::lowest(),
+                                       TValue max_value = std::numeric_limits<TValue>::max(),
+                                       std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         while (true)
         {
             try
             {
                 out << prompt;
-                return input_numeric<T>(min_value, max_value, in);
+                return input_numeric<TValue>(min_value, max_value, in);
             }
             catch (const std::runtime_error &error)
             {

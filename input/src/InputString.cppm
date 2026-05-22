@@ -1,10 +1,3 @@
-/**
- * @file InputString.cppm
- * @brief Модуль безопасного ввода и валидации строковых типов.
- * @details Предоставляет типобезопасный консольный ввод с проверкой по регулярному выражению.
- * @author CherryJell & Dauxdu
- * @date 2026
- */
 export module inx:string;
 
 import std;
@@ -39,9 +32,6 @@ export namespace inx
         return trimmed;
     }
 
-    /**
-     * @brief Перегрузка input_string для строковых литералов-шаблонов.
-     */
     [[nodiscard]] std::string input_string(const std::string &pattern, std::istream &in = std::cin)
     {
         const std::regex pattern_str{pattern};
@@ -71,9 +61,6 @@ export namespace inx
         }
     }
 
-    /**
-     * @brief Перегрузка input_prompt_string для строковых литералов-шаблонов.
-     */
     [[nodiscard]] std::string input_string(const std::string &prompt, const std::string &pattern,
                                            std::istream &in = std::cin, std::ostream &out = std::cout)
     {
