@@ -4,7 +4,7 @@ import std;
 
 namespace inx
 {
-    [[nodiscard]] std::string trim(const std::string &raw_str)
+    std::string trim(const std::string &raw_str)
     {
         constexpr std::string_view whitespace = " \t\n\r\f\v";
         auto start = raw_str.find_first_not_of(whitespace);

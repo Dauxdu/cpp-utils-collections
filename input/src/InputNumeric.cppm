@@ -5,13 +5,11 @@ import :helper;
 
 export namespace inx
 {
-    template <typename T>
-    concept NumericType = std::is_arithmetic_v<T> && !std::is_same_v<T, bool>;
-
-    template <NumericType TValue>
-    [[nodiscard]] TValue input_numeric(TValue min_value = std::numeric_limits<TValue>::lowest(),
-                                       TValue max_value = std::numeric_limits<TValue>::max(),
-                                       std::istream &in = std::cin)
+    template <typename TValue>
+    [[nodiscard]]
+    TValue input_numeric(TValue min_value = std::numeric_limits<TValue>::lowest(),
+                         TValue max_value = std::numeric_limits<TValue>::max(),
+                         std::istream &in = std::cin)
     {
 
         if (min_value > max_value)
@@ -21,30 +19,28 @@ export namespace inx
 
         TValue value{};
         std::string line;
-        std::from_chars_result result{};
-
         if (!std::getline(in, line))
         {
             throw std::runtime_error("inx::input_numeric: input stream failure");
         }
 
         const std::string trimmed = inx::trim(line);
-
-        const char *begin = trimmed.data();
-        const char *end = trimmed.data() + trimmed.size();
-
         if (trimmed.empty())
         {
             throw std::invalid_argument("inx::input_numeric: empty input");
         }
 
+        const char *begin = trimmed.data();
+        const char *end = trimmed.data() + trimmed.size();
+
+        std::from_chars_result result{};
         if constexpr (std::integral<TValue>)
         {
             result = std::from_chars(begin, end, value);
         }
         else if constexpr (std::floating_point<TValue>)
         {
-            result = std::from_chars(begin, end, value, std::chars_format::general);
+            result = std::from_chars(begin, end, value);
         }
 
         if (result.ec == std::errc::invalid_argument)
@@ -70,11 +66,12 @@ export namespace inx
         return value;
     }
 
-    template <NumericType TValue>
-    [[nodiscard]] TValue input_numeric(const std::string &prompt,
-                                       TValue min_value = std::numeric_limits<TValue>::lowest(),
-                                       TValue max_value = std::numeric_limits<TValue>::max(),
-                                       std::istream &in = std::cin, std::ostream &out = std::cout)
+    template <typename TValue>
+    [[nodiscard]]
+    TValue input_numeric(const std::string &prompt,
+                         TValue min_value = std::numeric_limits<TValue>::lowest(),
+                         TValue max_value = std::numeric_limits<TValue>::max(),
+                         std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         while (true)
         {

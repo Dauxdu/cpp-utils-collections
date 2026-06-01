@@ -5,7 +5,8 @@ import :helper;
 
 export namespace inx
 {
-    [[nodiscard]] std::string input_string(const std::regex &pattern, std::istream &in = std::cin)
+    [[nodiscard]]
+    std::string input_string(const std::regex &pattern, std::istream &in = std::cin)
     {
         std::string line;
 
@@ -32,15 +33,17 @@ export namespace inx
         return trimmed;
     }
 
-    [[nodiscard]] std::string input_string(const std::string &pattern, std::istream &in = std::cin)
+    [[nodiscard]]
+    std::string input_string(const std::string &pattern, std::istream &in = std::cin)
     {
         const std::regex pattern_str{pattern};
 
         return input_string(pattern_str, in);
     }
 
-    [[nodiscard]] std::string input_string(const std::string &prompt, const std::regex &pattern,
-                                           std::istream &in = std::cin, std::ostream &out = std::cout)
+    [[nodiscard]]
+    std::string input_string(const std::string &prompt, const std::regex &pattern,
+                             std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         while (true)
         {
@@ -61,8 +64,9 @@ export namespace inx
         }
     }
 
-    [[nodiscard]] std::string input_string(const std::string &prompt, const std::string &pattern,
-                                           std::istream &in = std::cin, std::ostream &out = std::cout)
+    [[nodiscard]]
+    std::string input_string(const std::string &prompt, const std::string &pattern,
+                             std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         const std::regex pattern_str{pattern};
 
