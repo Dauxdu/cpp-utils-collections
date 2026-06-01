@@ -9,22 +9,19 @@ export namespace inx
     std::string input_string(const std::regex &pattern, std::istream &in = std::cin)
     {
         std::string line;
-
         if (!std::getline(in, line))
         {
             throw std::runtime_error("inx::input_string: input stream failure");
         }
 
         const std::string trimmed = inx::trim(line);
-
-        const char *begin = trimmed.data();
-        const char *end = trimmed.data() + trimmed.size();
-
         if (trimmed.empty())
         {
             throw std::invalid_argument("inx::input_string: empty input");
         }
 
+        const char *begin = trimmed.data();
+        const char *end = trimmed.data() + trimmed.size();
         if (!std::regex_match(begin, end, pattern))
         {
             throw std::invalid_argument(std::format("inx::input_string: input '{}' does not match required pattern", trimmed));
@@ -37,7 +34,6 @@ export namespace inx
     std::string input_string(const std::string &pattern, std::istream &in = std::cin)
     {
         const std::regex pattern_str{pattern};
-
         return input_string(pattern_str, in);
     }
 
@@ -69,7 +65,6 @@ export namespace inx
                              std::istream &in = std::cin, std::ostream &out = std::cout)
     {
         const std::regex pattern_str{pattern};
-
         return input_string(prompt, pattern_str, in, out);
     }
 }

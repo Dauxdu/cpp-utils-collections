@@ -11,7 +11,6 @@ export namespace inx
                          TValue max_value = std::numeric_limits<TValue>::max(),
                          std::istream &in = std::cin)
     {
-
         if (min_value > max_value)
         {
             throw std::logic_error("inx::input_numeric: min_value > max_value");
